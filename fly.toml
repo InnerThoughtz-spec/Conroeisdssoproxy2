@@ -1,0 +1,22 @@
+app = "scramjet-proxy"          # change to your chosen app name
+primary_region = "iad"          # iad=Virginia, lax=LA, lhr=London, etc.
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port       = 8080
+  force_https         = true
+  auto_stop_machines  = true
+  auto_start_machines = true
+  min_machines_running = 0      # scale to zero when idle (free tier friendly)
+
+  [http_service.concurrency]
+    type       = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
